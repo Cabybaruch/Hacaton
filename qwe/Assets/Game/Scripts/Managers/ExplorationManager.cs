@@ -1,7 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Game.scripts;
 
-namespace Game.scripts
+namespace Game.Managers
 {
 	public class ExplorationManager : MonoBehaviour
 	{

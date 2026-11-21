@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using Game.Managers;
 
 namespace Game.scripts
 {
@@ -30,7 +30,8 @@ namespace Game.scripts
 
 			if (explorationManager.CollectArtifact(this))
 			{
-				gameObject.SetActive(value: false);
+				//gameObject.SetActive(value: false);
+				return;
 			}
 		}
 	}

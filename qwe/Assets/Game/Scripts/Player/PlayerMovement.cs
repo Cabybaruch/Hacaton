@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Game.Managers;
 
 namespace Game.scripts
 {
@@ -15,6 +16,11 @@ namespace Game.scripts
 		
 		private Vector2 _inputDirection;
 
+		private ArtifactItem _currentItem = null;
+		private bool _isInteracting = false;
+		private bool _canInteract = false;
+		private bool _canMove = false;
+
 		private void Awake()
 		{
 			if (_rigidbody == null)
@@ -29,6 +35,13 @@ namespace Game.scripts
 
 			_rigidbody.gravityScale = 0f;
 			_rigidbody.freezeRotation = true;
+			
+			AllowMovement();
+		}
+
+		public void AllowMovement()
+		{
+			_canMove = true;
 		}
 
 		public void OnMove(InputAction.CallbackContext context)
@@ -51,5 +64,47 @@ namespace Game.scripts
 				_rigidbody.linearVelocity = Vector2.zero;
 			}
 		}
+		
+		private void OnTriggerEnter2D(Collider2D other)
+		{
+			ArtifactItem artifact = other.GetComponent<ArtifactItem>();
+			if (artifact != null)
+			{
+				_currentItem = artifact;
+				_canInteract = true;
+				//Debug.Log(_currentItem);
+				//Debug.Log(_currentItem.ArtifactName);
+				//Debug.Log(_canInteract);
+			}
+		}
+		private void OnTriggerExit2D(Collider2D other)
+		{
+			ArtifactItem artifact = other.GetComponent<ArtifactItem>();
+			if (artifact != null)
+			{
+				_currentItem = null;
+				_canInteract = false;
+			}
+		}
+		
+
+		public void SetInteracting(bool _isInteracting)
+		{
+			
+			if (_canInteract & _isInteracting)
+			{
+				InteractionManager.Instance.InteractWithItem(_currentItem);
+				_canMove = false;
+			}
+		}
+
+		public void OnInteract(InputAction.CallbackContext context)
+		{
+			Debug.Log("OnInteract");
+			_isInteracting = context.ReadValueAsButton();
+			SetInteracting(_isInteracting);
+			
+		}
+		
 	}
 }
