@@ -88,23 +88,7 @@ namespace Game.scripts
 		}
 		
 
-		public void SetInteracting(bool _isInteracting)
-		{
-			
-			if (_canInteract & _isInteracting)
-			{
-				InteractionManager.Instance.InteractWithItem(_currentItem);
-				_canMove = false;
-			}
-		}
 
-		public void OnInteract(InputAction.CallbackContext context)
-		{
-			Debug.Log("OnInteract");
-			_isInteracting = context.ReadValueAsButton();
-			SetInteracting(_isInteracting);
-			
-		}
 		
 	}
 }
